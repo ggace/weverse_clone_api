@@ -33,5 +33,11 @@ namespace weverse_clone_api.Controllers
             CheckUserDB(database);
             return userDb.IsLogin(HttpContext.Connection.RemoteIpAddress?.ToString());
         }
+        public string Login(string user_id, string user_pw)
+        {
+            Database database = HttpContext.RequestServices.GetService(typeof(Database)) as Database;
+            CheckUserDB(database);
+            return userDb.Login(HttpContext.Connection.RemoteIpAddress?.ToString(), user_id, user_pw);
+        }
     }
 }

@@ -138,5 +138,40 @@ namespace weverse_clone_api.Databases
             }
             return imgs_source;
         }
+
+        public string InsertPost(string content, string ip)
+        {
+            string SQL = "INSERT INTO posts(user_id, written_date, updated_date, content) \n" +
+                "SELECT user_id, NOW(), NOW(), \"" + content +"\" \n" + 
+                "FROM islogin \n" + 
+                "WHERE ip = \"" + ip +"\"";
+
+            Console.WriteLine(SQL);
+
+            using (MySqlConnection conn = this.Database.GetConnection())
+            {
+                try
+                {
+                    conn.Open();
+                    MySqlCommand cmd = new MySqlCommand(SQL, conn);
+                    if (cmd.ExecuteNonQuery() == 1)
+                    {
+                        conn.Close();
+                        return "success";
+                    }
+
+                    else
+                    {
+                        conn.Close();
+                        return "already exist";
+                    }
+                }
+                catch (Exception e)
+                {
+                    conn.Close();
+                    return "db fail";
+                }
+            }
+        }
     }
 }

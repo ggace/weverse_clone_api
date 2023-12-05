@@ -43,5 +43,12 @@ namespace weverse_clone_api.Controllers
             post.imgs_source = postDb.GetImgs(id);
             return post.ToString();
         }
+
+        public String InsertPost(string content)
+        {
+            Database database = HttpContext.RequestServices.GetService(typeof(Database)) as Database;
+            CheckUserDB(database);
+            return postDb.InsertPost(content, HttpContext.Connection.RemoteIpAddress?.ToString());
+        }
     }
 }
